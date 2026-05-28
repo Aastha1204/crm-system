@@ -87,7 +87,9 @@ ticketSchema.pre("save", async function (next) {
 
   if (!this.ticketId) {
 
-    const count = await mongoose.model("Ticket").countDocuments();
+    const count = await mongoose
+    .model("Ticket")
+    .countDocuments();
 
     this.ticketId = `TKT-${1000 + count + 1}`;
 
