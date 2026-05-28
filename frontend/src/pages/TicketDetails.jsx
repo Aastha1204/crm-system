@@ -155,6 +155,12 @@ function TicketDetails() {
 
           <div className="flex justify-between items-center">
 
+            <p className="text-gray-500 mb-4 text-lg">
+
+  {ticket.ticketId}
+
+</p>
+
             <h1 className="text-5xl font-bold">
 
               {ticket.subject}

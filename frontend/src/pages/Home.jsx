@@ -137,6 +137,12 @@ function Home() {
 
               <div className="flex justify-between items-center">
 
+                <p className="text-sm text-gray-500 mb-2">
+
+  {ticket.ticketId}
+
+</p>
+
 
                 <h2 className="text-2xl font-bold">
 

@@ -27,6 +27,13 @@ const ticketSchema = new mongoose.Schema(
       required: true,
 
     },
+    ticketId: {
+
+  type: String,
+
+  unique: true,
+
+},
 
     description: {
 
@@ -43,6 +50,7 @@ const ticketSchema = new mongoose.Schema(
       default: "Open",
 
     },
+  
 
     priority: {
 
