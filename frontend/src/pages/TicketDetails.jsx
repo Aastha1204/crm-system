@@ -1,15 +1,10 @@
 import {
-
   useEffect,
-
   useState,
-
 } from "react";
 
 import {
-
   useParams,
-
 } from "react-router-dom";
 
 import toast from "react-hot-toast";
@@ -20,16 +15,13 @@ import Sidebar from "../components/Sidebar";
 
 import Navbar from "../components/Navbar";
 
-
 function TicketDetails() {
 
   const { id } = useParams();
 
-
   const [ticket, setTicket] = useState(null);
 
   const [note, setNote] = useState("");
-
 
   // FETCH SINGLE TICKET
 
@@ -38,9 +30,7 @@ function TicketDetails() {
     try {
 
       const res = await API.get(
-
         `/tickets/${id}`
-
       );
 
       setTicket(res.data);
@@ -49,10 +39,13 @@ function TicketDetails() {
 
       console.log(error);
 
+      toast.error(
+        "Failed to fetch ticket 😭"
+      );
+
     }
 
   };
-
 
   // UPDATE STATUS
 
@@ -61,61 +54,54 @@ function TicketDetails() {
     try {
 
       await API.put(
-
         `/tickets/${id}`,
-
-        { status }
-
+        {
+          status,
+        }
       );
-
 
       toast.success(
-
         "Status Updated 😭🔥"
-
       );
-
 
       fetchTicket();
 
     } catch (error) {
 
+      console.log(error);
+
       toast.error(
-
-        "Update failed"
-
+        "Update failed 😭"
       );
 
     }
 
   };
 
-
   // ADD NOTE
 
   const addNote = async () => {
 
+    if (!note.trim()) {
+
+      return toast.error(
+        "Write a note first 😭"
+      );
+
+    }
+
     try {
 
       await API.put(
-
         `/tickets/${id}`,
-
         {
-
           note,
-
         }
-
       );
-
 
       toast.success(
-
         "Note Added 😭🔥"
-
       );
-
 
       setNote("");
 
@@ -123,23 +109,21 @@ function TicketDetails() {
 
     } catch (error) {
 
+      console.log(error);
+
       toast.error(
-
-        "Failed to add note"
-
+        "Failed to add note 😭"
       );
 
     }
 
   };
 
-
   useEffect(() => {
 
     fetchTicket();
 
   }, []);
-
 
   if (!ticket) {
 
@@ -155,27 +139,21 @@ function TicketDetails() {
 
   }
 
-
   return (
 
     <div className="flex bg-[#0f172a] min-h-screen text-white">
 
       <Sidebar />
 
-
       <div className="ml-64 p-8 w-full">
 
         <Navbar />
 
-
         <div className="bg-[#111827]/80 border border-gray-800 rounded-3xl p-10 mt-10 shadow-2xl">
 
-
-          {/* TOP */}
-
+          {/* TOP SECTION */}
 
           <div className="flex justify-between items-center">
-
 
             <h1 className="text-5xl font-bold">
 
@@ -183,26 +161,15 @@ function TicketDetails() {
 
             </h1>
 
-
             <span
-
               className={`px-6 py-3 rounded-full text-lg font-bold
 
               ${
                 ticket.priority === "High"
-
-                ?
-
-                "bg-red-500"
-
-                :
-
-                "bg-yellow-500"
-
+                  ? "bg-red-500"
+                  : "bg-yellow-500"
               }
-
               `}
-
             >
 
               {ticket.priority}
@@ -211,9 +178,7 @@ function TicketDetails() {
 
           </div>
 
-
           {/* DESCRIPTION */}
-
 
           <p className="text-gray-400 mt-8 text-xl leading-relaxed">
 
@@ -221,12 +186,9 @@ function TicketDetails() {
 
           </p>
 
-
-          {/* INFO CARDS */}
-
+          {/* CUSTOMER INFO */}
 
           <div className="grid grid-cols-2 gap-6 mt-10">
-
 
             <div className="bg-[#0f172a] p-6 rounded-2xl border border-gray-800">
 
@@ -236,7 +198,6 @@ function TicketDetails() {
 
               </h2>
 
-
               <p className="text-2xl mt-2 font-bold">
 
                 {ticket.customerName}
@@ -244,7 +205,6 @@ function TicketDetails() {
               </p>
 
             </div>
-
 
             <div className="bg-[#0f172a] p-6 rounded-2xl border border-gray-800">
 
@@ -254,8 +214,7 @@ function TicketDetails() {
 
               </h2>
 
-
-              <p className="text-2xl mt-2 font-bold">
+              <p className="text-2xl mt-2 font-bold break-all">
 
                 {ticket.customerEmail}
 
@@ -265,12 +224,9 @@ function TicketDetails() {
 
           </div>
 
-
-          {/* STATUS */}
-
+          {/* STATUS SECTION */}
 
           <div className="mt-12">
-
 
             <h2 className="text-3xl font-bold">
 
@@ -278,48 +234,35 @@ function TicketDetails() {
 
             </h2>
 
-
             <div className="flex gap-4 mt-6">
 
-
               <button
-
                 onClick={() =>
                   updateStatus("Open")
                 }
-
                 className="bg-blue-500 px-6 py-3 rounded-2xl hover:scale-105 transition"
-
               >
 
                 Open
 
               </button>
 
-
               <button
-
                 onClick={() =>
                   updateStatus("In Progress")
                 }
-
                 className="bg-yellow-500 px-6 py-3 rounded-2xl hover:scale-105 transition"
-
               >
 
                 In Progress
 
               </button>
 
-
               <button
-
                 onClick={() =>
                   updateStatus("Closed")
                 }
-
                 className="bg-green-500 px-6 py-3 rounded-2xl hover:scale-105 transition"
-
               >
 
                 Closed
@@ -328,15 +271,12 @@ function TicketDetails() {
 
             </div>
 
-
             <div className="mt-8">
-
 
               <span className="bg-purple-500 px-6 py-3 rounded-full text-lg font-semibold">
 
                 Current Status:
                 {" "}
-
                 {ticket.status}
 
               </span>
@@ -345,12 +285,9 @@ function TicketDetails() {
 
           </div>
 
-
           {/* NOTES SECTION */}
 
-
           <div className="mt-14">
-
 
             <h2 className="text-3xl font-bold mb-6">
 
@@ -358,64 +295,58 @@ function TicketDetails() {
 
             </h2>
 
-
             <textarea
-
               placeholder="Write internal note..."
-
               value={note}
-
               onChange={(e) =>
                 setNote(e.target.value)
               }
-
               className="w-full h-40 bg-[#0f172a] border border-gray-700 rounded-2xl p-5 outline-none"
-
             />
 
-
             <button
-
-              onClick={addNote}
-
+              onClick={() => addNote()}
               className="mt-5 bg-linear-to-r from-purple-500 to-pink-500 px-8 py-4 rounded-2xl font-bold hover:scale-105 transition"
-
             >
 
               Add Note
 
             </button>
 
-
             {/* NOTES LIST */}
-
 
             <div className="space-y-4 mt-8">
 
+              {ticket.notes?.length > 0 ? (
 
-              {ticket.notes?.map((item, index) => (
+                ticket.notes.map((item, index) => (
 
-                <div
+                  <div
+                    key={index}
+                    className="bg-[#0f172a] border border-gray-700 p-5 rounded-2xl"
+                  >
 
-                  key={index}
+                    {item}
 
-                  className="bg-[#0f172a] border border-gray-700 p-5 rounded-2xl"
+                  </div>
 
-                >
+                ))
 
-                  {item}
+              ) : (
 
-                </div>
+                <p className="text-gray-500">
 
-              ))}
+                  No notes added yet 😭
+
+                </p>
+
+              )}
 
             </div>
 
           </div>
 
-
           {/* TIMESTAMP */}
-
 
           <div className="mt-12 text-gray-500">
 
@@ -423,13 +354,9 @@ function TicketDetails() {
             {" "}
 
             {
-
               new Date(
-
                 ticket.createdAt
-
               ).toLocaleString()
-
             }
 
           </div>
@@ -443,6 +370,5 @@ function TicketDetails() {
   );
 
 }
-
 
 export default TicketDetails;
