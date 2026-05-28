@@ -25,9 +25,7 @@ function Home() {
     try {
 
       const res = await API.get(
-
         `/tickets?search=${search}&status=${status}`
-
       );
 
       setTickets(res.data);
@@ -62,36 +60,25 @@ function Home() {
 
         {/* SEARCH + FILTER */}
 
-
         <div className="flex gap-4 mt-8">
 
           <input
-
             type="text"
-
             placeholder="Search tickets..."
-
             value={search}
-
             onChange={(e) =>
               setSearch(e.target.value)
             }
-
             className="bg-[#111827] border border-gray-700 p-4 rounded-2xl w-full outline-none"
-
           />
 
 
           <select
-
             value={status}
-
             onChange={(e) =>
               setStatus(e.target.value)
             }
-
             className="bg-[#111827] border border-gray-700 p-4 rounded-2xl outline-none"
-
           >
 
             <option value="">
@@ -117,54 +104,46 @@ function Home() {
 
         {/* TICKETS */}
 
-
         <div className="grid grid-cols-3 gap-6 mt-10">
-
 
           {tickets.map((ticket) => (
 
-
             <Link
-
               to={`/ticket/${ticket._id}`}
-
               key={ticket._id}
-
               className="bg-[#111827]/80 border border-gray-800 rounded-3xl p-6 shadow-2xl hover:scale-105 transition block"
-
             >
 
+              {/* TOP SECTION */}
 
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-start gap-4">
 
-                <p className="text-sm text-gray-500 mb-2">
+                <div>
 
-  {ticket.ticketId}
+                  <p className="text-sm text-gray-500 mb-2">
 
-</p>
+                    {ticket.ticketId || "TKT-000"}
 
+                  </p>
 
-                <h2 className="text-2xl font-bold">
+                  <h2 className="text-2xl font-bold leading-tight">
 
-                  {ticket.subject}
+                    {ticket.subject}
 
-                </h2>
+                  </h2>
+
+                </div>
 
 
                 <span
-
-                  className={`px-4 py-2 rounded-full text-sm font-semibold
+                  className={`px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap
 
                   ${
                     ticket.priority === "High"
-
                       ? "bg-red-500"
-
                       : "bg-yellow-500"
                   }
-
                   `}
-
                 >
 
                   {ticket.priority}
@@ -174,15 +153,18 @@ function Home() {
               </div>
 
 
-              <p className="text-gray-400 mt-4">
+              {/* DESCRIPTION */}
+
+              <p className="text-gray-400 mt-4 leading-relaxed">
 
                 {ticket.description}
 
               </p>
 
 
-              <div className="flex justify-between items-center mt-6">
+              {/* FOOTER */}
 
+              <div className="flex justify-between items-center mt-6">
 
                 <p className="text-gray-500">
 
@@ -191,7 +173,18 @@ function Home() {
                 </p>
 
 
-                <span className="bg-blue-500 px-4 py-2 rounded-full text-sm">
+                <span
+                  className={`px-4 py-2 rounded-full text-sm font-semibold
+
+                  ${
+                    ticket.status === "Closed"
+                      ? "bg-green-500"
+                      : ticket.status === "In Progress"
+                      ? "bg-yellow-500"
+                      : "bg-blue-500"
+                  }
+                  `}
+                >
 
                   {ticket.status}
 
@@ -212,6 +205,5 @@ function Home() {
   );
 
 }
-
 
 export default Home;
