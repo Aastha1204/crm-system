@@ -37,31 +37,17 @@ function Navbar() {
       </div>
 
 
-      {token ? (
+      {token && (
 
         <button
 
           onClick={handleLogout}
 
-          className="bg-linear-to-r from-purple-500 to-pink-500 px-6 py-3 rounded-2xl text-white font-semibold shadow-lg hover:scale-105 transition"
+          className="bg-linear-to-r from-purple-500 to-pink-500 px-8 py-4 rounded-2xl font-bold text-white hover:scale-105 transition"
 
         >
 
           Logout
-
-        </button>
-
-      ) : (
-
-        <button
-
-          onClick={() => navigate("/login")}
-
-          className="bg-linear-to-r from-blue-500 to-cyan-500 px-6 py-3 rounded-2xl text-white font-semibold shadow-lg hover:scale-105 transition"
-
-        >
-
-          Login
 
         </button>
 

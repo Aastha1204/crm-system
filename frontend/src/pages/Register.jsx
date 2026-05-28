@@ -2,12 +2,10 @@ import { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 
-import toast from "react-hot-toast";
-
 import AUTH_API from "../api/authApi";
 
 
-function Login() {
+function Register() {
 
   const navigate = useNavigate();
 
@@ -39,36 +37,20 @@ function Login() {
 
     try {
 
-      const res = await AUTH_API.post(
+      await AUTH_API.post(
 
-        "/login",
+        "/register",
 
         formData
-
-      );
-      console.log(res.data);
-
-
-      localStorage.setItem(
-
-        "token",
-
-        res.data.token
-
       );
 
+      alert("Registered Successfully 😭🔥");
 
-      toast.success("Login Successful 😭🔥");
-
-
-      window.location.href = "/dashboard";
-
+      navigate("/login");
 
     } catch (error) {
 
       console.log(error);
-
-      toast.error("Invalid Credentials 😭");
 
     }
 
@@ -84,53 +66,36 @@ function Login() {
         onSubmit={handleSubmit}
 
         className="bg-[#111827] p-12 rounded-3xl w-[500px] border border-gray-800"
-
       >
 
-        <h1 className="text-white text-6xl font-bold text-center mb-10">
+        <h1 className="text-white text-5xl font-bold text-center mb-10">
 
-          CRM Login
+          Register
 
         </h1>
 
 
         <input
-
           type="email"
-
           name="email"
-
           placeholder="Email"
-
           onChange={handleChange}
-
           className="w-full p-5 rounded-2xl bg-[#1e293b] text-white outline-none mb-8"
-
         />
 
 
         <input
-
           type="password"
-
           name="password"
-
           placeholder="Password"
-
           onChange={handleChange}
-
           className="w-full p-5 rounded-2xl bg-[#0f172a] text-white outline-none mb-8 border border-gray-700"
-
         />
 
 
-        <button
+        <button className="w-full bg-linear-to-r from-purple-500 to-pink-500 text-white p-5 rounded-2xl font-bold text-2xl">
 
-          className="w-full bg-linear-to-r from-purple-500 to-pink-500 text-white p-5 rounded-2xl font-bold text-2xl hover:scale-105 transition"
-
-        >
-
-          Login
+          Register
 
         </button>
 
@@ -142,4 +107,4 @@ function Login() {
 
 }
 
-export default Login;
+export default Register;
