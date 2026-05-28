@@ -158,11 +158,13 @@ router.put("/:id", async (req, res) => {
 
   try {
 
+    const { status, note } = req.body;
+
     const ticket = await Ticket.findById(
 
       req.params.id
-    );
 
+    );
 
     if (!ticket) {
 
@@ -175,14 +177,34 @@ router.put("/:id", async (req, res) => {
     }
 
 
-    ticket.status =
-      req.body.status || ticket.status;
+    // UPDATE STATUS
+
+    if (status) {
+
+      ticket.status = status;
+
+    }
+
+
+    // ADD NOTE
+
+    if (note) {
+
+      ticket.notes.push(note);
+
+    }
 
 
     await ticket.save();
 
 
-    res.json(ticket);
+    res.json({
+
+      message: "Ticket Updated Successfully",
+
+      ticket,
+
+    });
 
   } catch (error) {
 

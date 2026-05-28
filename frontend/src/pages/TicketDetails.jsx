@@ -28,6 +28,8 @@ function TicketDetails() {
 
   const [ticket, setTicket] = useState(null);
 
+  const [note, setNote] = useState("");
+
 
   // FETCH SINGLE TICKET
 
@@ -81,6 +83,49 @@ function TicketDetails() {
       toast.error(
 
         "Update failed"
+
+      );
+
+    }
+
+  };
+
+
+  // ADD NOTE
+
+  const addNote = async () => {
+
+    try {
+
+      await API.put(
+
+        `/tickets/${id}`,
+
+        {
+
+          note,
+
+        }
+
+      );
+
+
+      toast.success(
+
+        "Note Added 😭🔥"
+
+      );
+
+
+      setNote("");
+
+      fetchTicket();
+
+    } catch (error) {
+
+      toast.error(
+
+        "Failed to add note"
 
       );
 
@@ -295,6 +340,74 @@ function TicketDetails() {
                 {ticket.status}
 
               </span>
+
+            </div>
+
+          </div>
+
+
+          {/* NOTES SECTION */}
+
+
+          <div className="mt-14">
+
+
+            <h2 className="text-3xl font-bold mb-6">
+
+              Internal Notes
+
+            </h2>
+
+
+            <textarea
+
+              placeholder="Write internal note..."
+
+              value={note}
+
+              onChange={(e) =>
+                setNote(e.target.value)
+              }
+
+              className="w-full h-40 bg-[#0f172a] border border-gray-700 rounded-2xl p-5 outline-none"
+
+            />
+
+
+            <button
+
+              onClick={addNote}
+
+              className="mt-5 bg-linear-to-r from-purple-500 to-pink-500 px-8 py-4 rounded-2xl font-bold hover:scale-105 transition"
+
+            >
+
+              Add Note
+
+            </button>
+
+
+            {/* NOTES LIST */}
+
+
+            <div className="space-y-4 mt-8">
+
+
+              {ticket.notes?.map((item, index) => (
+
+                <div
+
+                  key={index}
+
+                  className="bg-[#0f172a] border border-gray-700 p-5 rounded-2xl"
+
+                >
+
+                  {item}
+
+                </div>
+
+              ))}
 
             </div>
 

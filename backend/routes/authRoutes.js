@@ -1,30 +1,70 @@
 const express = require("express");
 
+const router = express.Router();
+
 const bcrypt = require("bcryptjs");
 
 const jwt = require("jsonwebtoken");
 
 const User = require("../models/User");
 
-const router = express.Router();
 
 
-// REGISTER
+/* =========================
+   REGISTER
+========================= */
 
 router.post("/register", async (req, res) => {
 
   try {
 
     const {
+
       username,
+
       email,
+
       password,
+
     } = req.body;
 
 
-    const hashedPassword =
-      await bcrypt.hash(password, 10);
 
+    // CHECK USER
+
+    const existingUser = await User.findOne({
+
+      email,
+
+    });
+
+
+
+    if (existingUser) {
+
+      return res.status(400).json({
+
+        message: "User already exists",
+
+      });
+
+    }
+
+
+
+    // HASH PASSWORD
+
+    const hashedPassword = await bcrypt.hash(
+
+      password,
+
+      10
+
+    );
+
+
+
+    // CREATE USER
 
     const user = await User.create({
 
@@ -37,12 +77,21 @@ router.post("/register", async (req, res) => {
     });
 
 
-    res.status(201).json(user);
+
+    res.status(201).json({
+
+      message: "User Registered 😭🔥",
+
+      user,
+
+    });
 
   } catch (error) {
 
     res.status(500).json({
+
       message: error.message,
+
     });
 
   }
@@ -50,88 +99,113 @@ router.post("/register", async (req, res) => {
 });
 
 
-// LOGIN
+
+/* =========================
+   LOGIN
+========================= */
 
 router.post("/login", async (req, res) => {
 
   try {
 
     const {
+
       email,
+
       password,
+
     } = req.body;
 
 
+
+    // FIND USER
+
     const user = await User.findOne({
+
       email,
+
     });
+
 
 
     if (!user) {
 
       return res.status(400).json({
-        message: "User not found",
+
+        message: "Invalid Email",
+
       });
 
     }
 
 
-    const isMatch =
-      await bcrypt.compare(
-        password,
-        user.password
-      );
+
+    // CHECK PASSWORD
+
+    const isMatch = await bcrypt.compare(
+
+      password,
+
+      user.password
+
+    );
+
 
 
     if (!isMatch) {
 
       return res.status(400).json({
-        message: "Invalid credentials",
+
+        message: "Invalid Password",
+
       });
 
     }
 
 
+
+    // TOKEN
+
     const token = jwt.sign(
 
       {
+
         id: user._id,
+
       },
 
       process.env.JWT_SECRET,
 
       {
+
         expiresIn: "7d",
+
       }
 
     );
+
 
 
     res.json({
 
       token,
 
-      user: {
-
-        id: user._id,
-
-        username: user.username,
-
-        email: user.email,
-
-      },
+      user,
 
     });
 
   } catch (error) {
 
     res.status(500).json({
+
       message: error.message,
+
     });
 
   }
 
 });
+
 
 
 module.exports = router;
