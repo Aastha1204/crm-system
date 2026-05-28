@@ -83,27 +83,28 @@ const ticketSchema = new mongoose.Schema(
 
 // AUTO GENERATE TICKET ID
 
-ticketSchema.pre("save", async function (next) {
+ticketSchema.pre(
 
-  if (!this.ticketId) {
+  "save",
 
-    const count = await mongoose
-    .model("Ticket")
-    .countDocuments();
+  async function () {
 
-    this.ticketId = `TKT-${1000 + count + 1}`;
+    if (!this.ticketId) {
+
+      const count = await mongoose
+        .model("Ticket")
+        .countDocuments();
+
+      this.ticketId = `TKT-${1000 + count + 1}`;
+
+    }
 
   }
 
-  next();
-
-});
+);
 
 
 module.exports = mongoose.model(
-
   "Ticket",
-
   ticketSchema
-
 );
