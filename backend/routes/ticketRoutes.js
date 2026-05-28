@@ -8,7 +8,7 @@ const sendEmail = require("../services/sendEmail");
 
 // CREATE TICKET
 
-router.post("/", async (req, res) => {
+router.post("/", async (req, res, next) => {
 
   try {
 
@@ -36,16 +36,17 @@ const generatedTicketId = `TKT-${String(
   totalTickets + 1
 ).padStart(3, "0")}`;
 
-    const ticket = await Ticket.create({
-      ticketId: generatedTicketId,
+    const count = await Ticket.countDocuments();
 
-      customerName,
-      customerEmail,
-      subject,
-      description,
-      priority,
+const ticket = await Ticket.create({
+  ticketId: `TKT-${String(count + 1).padStart(3, "0")}`,
 
-    });
+  customerName,
+  customerEmail,
+  subject,
+  description,
+  priority,
+});
 
     await sendEmail(
 
