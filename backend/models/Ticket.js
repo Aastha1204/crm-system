@@ -4,6 +4,14 @@ const ticketSchema = new mongoose.Schema(
 
   {
 
+    ticketId: {
+
+      type: String,
+
+      unique: true,
+
+    },
+
     customerName: {
 
       type: String,
@@ -27,13 +35,6 @@ const ticketSchema = new mongoose.Schema(
       required: true,
 
     },
-    ticketId: {
-
-  type: String,
-
-  unique: true,
-
-},
 
     description: {
 
@@ -50,7 +51,6 @@ const ticketSchema = new mongoose.Schema(
       default: "Open",
 
     },
-  
 
     priority: {
 
@@ -79,6 +79,24 @@ const ticketSchema = new mongoose.Schema(
   }
 
 );
+
+
+// AUTO GENERATE TICKET ID
+
+ticketSchema.pre("save", async function (next) {
+
+  if (!this.ticketId) {
+
+    const count = await mongoose.model("Ticket").countDocuments();
+
+    this.ticketId = `TKT-${1000 + count + 1}`;
+
+  }
+
+  next();
+
+});
+
 
 module.exports = mongoose.model(
 
