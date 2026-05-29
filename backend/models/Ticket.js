@@ -50,14 +50,20 @@ const ticketSchema = new mongoose.Schema(
   }
 );
 
-ticketSchema.pre("save", async function (next) {
-  if (!this.ticketId) {
-    const count = await mongoose.model("Ticket").countDocuments();
+ticketSchema.pre("save", async function () {
 
-    this.ticketId = `TKT-${String(count + 1).padStart(3, "0")}`;
+  if (!this.ticketId) {
+
+    const count = await mongoose
+      .model("Ticket")
+      .countDocuments();
+
+    this.ticketId = `TKT-${String(
+      count + 1
+    ).padStart(3, "0")}`;
+
   }
 
-  next();
 });
 
 module.exports = mongoose.model("Ticket", ticketSchema);
