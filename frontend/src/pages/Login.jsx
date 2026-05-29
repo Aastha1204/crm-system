@@ -68,9 +68,13 @@ function Login() {
 
       console.log(error);
 
-      toast.error("Invalid Credentials 😭");
+      alert(
+    JSON.stringify(error?.response?.data) ||
+    error.message
+  );
 
-    }
+  toast.error("Login Failed");
+}
 
   };
 
