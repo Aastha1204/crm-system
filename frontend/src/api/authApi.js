@@ -2,7 +2,7 @@ import axios from "axios";
 
 const AUTH_API = axios.create({
 
-  baseURL: "http://localhost:5000/api/auth",
+  baseURL: "https://crm-backend-rvng.onrender.com/api/auth",
 
 });
 
