@@ -8,7 +8,7 @@ const sendEmail = require("../services/sendEmail");
 
 // CREATE TICKET
 
-router.post("/", async (req, res, next) => {
+router.post("/", async (req, res) => {
 
   try {
 
